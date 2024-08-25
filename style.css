@@ -1,0 +1,84 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+}
+
+
+body{
+     background-color: rgb(11, 115, 68);
+    /* background:rgba(140, 200, 173, 0.773);  */
+    backdrop-filter: blur(10px);
+   
+}
+.container{
+    overflow: hidden;
+
+    /* background-image: url(https://th.bing.com/th/id/R.fc011c224b8eea3c1338c6a6500741e3?rik=kSdR7CruXdNiGQ&pid=ImgRaw&r=0); */
+    height: 800px;
+    width: 1400px;
+    margin: 0px 50px ;
+
+     background:rgba(140, 200, 173, 0.773);  
+}
+.time{
+    margin-left: 1200px;
+}
+.searchbox{
+ margin-top: 100px;
+ /* margin-left: 200px; */
+height: 50px;
+width: 500px;
+background-color:rgb(212, 219, 225);
+display: flex;
+padding: 0px 0px;
+align-items: center;
+justify-content:center;
+border-radius: 20px;
+}
+.all{
+
+    margin-left: 350px; 
+}
+.all h1,h2{
+   
+    margin-left: 200px;
+}
+
+
+.city img {
+    border: 3px solid black;
+    width: 30%;
+    margin-left: 45px;
+
+    
+  
+}
+.ok {
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    left: 1000px;
+    width: 450px; /* Adjust the width to blur more or less */
+    height: 100%;
+    background: linear-gradient(to left, rgba(255, 255, 255, 0.827), rgba(255, 255, 255, 0));
+    /* background-color: rgba(250, 235, 215, 0.296); */
+    backdrop-filter: blur(200px); /* Adjust the blur intensity */
+}
+.details{
+     margin-top: 300px;
+     display: flex;
+     flex-wrap: wrap;
+     justify-content: space-evenly;
+     gap:20px
+ 
+}
+.icon{
+    gap:100px;
+    margin-left: 40px;
+}
+.error{
+    display: none;
+}
+
