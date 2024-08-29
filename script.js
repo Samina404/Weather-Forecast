@@ -1,11 +1,22 @@
 const apiKey = "950c39adce058b4c24faa2694ea7e5c8";
-const apiUrl = `https://api.openweathermap.org/data/2.5/weather?units=metric&q=`;
+const apiUrl = `https://api.openweathermap.org/data/2.5/weather?units=metric`;
+
 const searchbox = document.querySelector(".searchbox input");
 const searchbtn = document.querySelector(".searchbox button");
 const weathericon = document.querySelector(".weather-icon");
 
-async function checkweather(cities) {
-    const response = await fetch(apiUrl + cities + `&appid=${apiKey}`);
+
+async function checkweather(cities = null, lat = null, lon = null) {
+    let url = "";
+
+    if (cities) {
+        url = `${apiUrl}&q=${cities}&appid=${apiKey}`;
+    } else if (lat && lon) {
+        url = `${apiUrl}&lat=${lat}&lon=${lon}&appid=${apiKey}`;
+    }
+
+    const response = await fetch(url);
+
     if (response.status == 404) {
         document.querySelector(".error").style.display = "block";
         document.querySelector(".city").style.display = "none";
@@ -27,9 +38,9 @@ async function checkweather(cities) {
         const sunsetTime = new Date(data.sys.sunset * 1000);
 
         const formatTime = (date) => {
-            const hours = date.getUTCHours();
-            const minutes = date.getUTCMinutes();
-            return `${hours}:${minutes < 10 ? '0' : ''}${minutes} UTC`;
+            const hours = date.getHours();
+            const minutes = date.getMinutes();
+            return `${hours % 12 || 12}:${minutes < 10 ? '0' : ''}${minutes} ${hours >= 12 ? 'PM' : 'AM'}`;
         };
 
         document.querySelector(".sunrise").innerHTML = formatTime(sunriseTime);
@@ -62,13 +73,18 @@ async function checkweather(cities) {
         document.querySelector(".current-date").innerHTML = formatDate(currentDate);
         document.querySelector(".current-time").innerHTML = formatCurrentTime(currentDate);
 
-        // Update weather icon based on weather condition
+
         if (data.weather[0].main == "Clouds") {
             weathericon.src = "asset/cloud.png";
+            container.style.backgroundImage = "url('Weather Forecast/rain.jpg')"
+         
         } else if (data.weather[0].main == "Clear") {
             weathericon.src = "asset/clearsky.png";
+changeBackgroundImage('Weather Forecast/storm.jpg');
+
         } else if (data.weather[0].main == "Rain") {
             weathericon.src = "asset/rain.png";
+
         } else if (data.weather[0].main == "Drizzle") {
             weathericon.src = "asset/drizzle-weather-7096832-5753008.webp.png";
         } else if (data.weather[0].main == "Fog") {
@@ -83,6 +99,32 @@ async function checkweather(cities) {
     }
 }
 
+// Event listener for search button click
 searchbtn.addEventListener("click", () => {
     checkweather(searchbox.value);
 });
+
+
+// Function to get user's current location and display weather
+// Function to get user's current location and display weather
+function getLocationAndWeather() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            checkweather(null, lat, lon);
+        }, (error) => {
+            console.error("Error getting location:", error);
+            alert("Unable to retrieve your location. Please try again.");
+        }, {
+            enableHighAccuracy: false, 
+            timeout: 10000, 
+            maximumAge: 0 
+        });
+    } else {
+        alert("Geolocation is not supported by this browser.");
+    }
+}
+
+// Call the function to get current location and weather when the page loads
+window.addEventListener("load", getLocationAndWeather);

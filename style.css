@@ -19,9 +19,9 @@ body{
     height: 800px;
     width: 1400px;
     margin: 0px 50px ;
-
-     background:rgba(140, 200, 173, 0.773);  
+    background:rgba(140, 200, 173, 0.773);  
 }
+
 .time{
     margin-left: 1200px;
 }
@@ -75,7 +75,7 @@ border-radius: 20px;
  
 }
 .icon{
-    gap:100px;
+  
     margin-left: 40px;
 }
 .error{
