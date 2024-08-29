@@ -4,7 +4,7 @@ const apiUrl = `https://api.openweathermap.org/data/2.5/weather?units=metric`;
 const searchbox = document.querySelector(".searchbox input");
 const searchbtn = document.querySelector(".searchbox button");
 const weathericon = document.querySelector(".weather-icon");
-
+const container = document.querySelector('.container');
 
 async function checkweather(cities = null, lat = null, lon = null) {
     let url = "";
@@ -70,31 +70,41 @@ async function checkweather(cities = null, lat = null, lon = null) {
             return `${formattedHours}:${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds} ${ampm}`;
         };
 
+        const updateClock = () => {
+            const now = new Date();
+            document.querySelector(".current-time").innerHTML = formatCurrentTime(now);
+        };
+
         document.querySelector(".current-date").innerHTML = formatDate(currentDate);
-        document.querySelector(".current-time").innerHTML = formatCurrentTime(currentDate);
+        updateClock();
 
+        setInterval(updateClock, 1000);
 
-        if (data.weather[0].main == "Clouds") {
+        // Update weather icon and background based on weather condition
+        if (data.weather[0].main === "Clouds") {
             weathericon.src = "asset/cloud.png";
-            container.style.backgroundImage = "url('Weather Forecast/rain.jpg')"
-         
-        } else if (data.weather[0].main == "Clear") {
+            container.style.backgroundImage = "url('./cloud.jpg')";
+        } else if (data.weather[0].main === "Clear") {
             weathericon.src = "asset/clearsky.png";
-changeBackgroundImage('Weather Forecast/storm.jpg');
-
-        } else if (data.weather[0].main == "Rain") {
+            container.style.backgroundImage = "url('./clear.jpg')";
+        } else if (data.weather[0].main === "Rain") {
             weathericon.src = "asset/rain.png";
-
-        } else if (data.weather[0].main == "Drizzle") {
-            weathericon.src = "asset/drizzle-weather-7096832-5753008.webp.png";
-        } else if (data.weather[0].main == "Fog") {
+            container.style.backgroundImage = "url('./rain.jpg')";
+        } else if (data.weather[0].main === "Drizzle") {
+            weathericon.src = "asset/drizzle.png";
+            container.style.backgroundImage = "url('./drizzle.jpg')";
+        } else if (data.weather[0].main === "Fog") {
             weathericon.src = "asset/fog.png";
-        } else if (data.weather[0].main == "Storm") {
+            container.style.backgroundImage = "url('./fog.jpg')";
+        } else if (data.weather[0].main === "Storm") {
             weathericon.src = "asset/storm.png";
-        } else if (data.weather[0].main == "Haze") {
+            container.style.backgroundImage = "url('./storm.jpg')";
+        } else if (data.weather[0].main === "Haze") {
             weathericon.src = "asset/haze.png";
-        } else if (data.weather[0].main == "Thunderstorm") {
-            weathericon.src = "asset/thunderstorm.jpeg";
+            container.style.backgroundImage = "url('./haze.jpg')";
+        } else if (data.weather[0].main === "Thunderstorm") {
+            weathericon.src = "asset/thunderstorm.png";
+            container.style.backgroundImage = "url('./thunderstorm.jpg')";
         }
     }
 }
@@ -104,8 +114,14 @@ searchbtn.addEventListener("click", () => {
     checkweather(searchbox.value);
 });
 
+// Event listener for pressing Enter key in searchbox
+searchbox.addEventListener("keypress", (event) => {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        searchbtn.click();
+    }
+});
 
-// Function to get user's current location and display weather
 // Function to get user's current location and display weather
 function getLocationAndWeather() {
     if (navigator.geolocation) {
